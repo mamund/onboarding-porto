@@ -1,12 +1,12 @@
 /*****************************************
- * company service for BigCo, Inc.
+ * onboarding api for BigCo, Inc.
  * 2019-01 mamund
  *****************************************/
  
 var express = require('express');
 var app = express();
-var company = require('./company');
-var port = process.env.PORT || 8484;
+var onboarding = require('./onboarding');
+var port = process.env.PORT || 8585;
  
-app.use('/company',company);
-app.listen(port, () => console.log(`company svc listening on port ${port}!`));
+app.use('/onboarding',onboarding);
+app.listen(port, () => console.log(`onboarding svc listening on port ${port}!`));

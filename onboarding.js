@@ -58,7 +58,7 @@ router.get('/', function (req, res) {
 // create
 router.post('/', function(req,res) {
   processPost(req,res).then(function(body) {
-    res.send('{"customer" : ' + JSON.stringify(body,null,2) + '}\n');
+    res.send('{"onboarding" : ' + JSON.stringify(body,null,2) + '}\n');
   }).catch(function(err) {
     res.send('{"error" : ' + JSON.stringify(err,null,2) + '}\n');
   });
@@ -67,7 +67,7 @@ router.post('/', function(req,res) {
 // list
 router.get('/list/', function(req, res) {
   processList(req,res).then(function(body) {
-    res.send('{"customer":' + JSON.stringify(body,null,2) + '}\n');
+    res.send('{"onboarding":' + JSON.stringify(body,null,2) + '}\n');
   }).catch(function(err) {
     res.send('{"error" : ' + JSON.stringify(err,null,2) + '}\n');
   });
@@ -76,34 +76,34 @@ router.get('/list/', function(req, res) {
 // filter
 router.get('/filter/', function(req, res) {
   processFilter(req,res).then(function(body){
-    res.send('{"customer":' + JSON.stringify(body,null,2) + '}\n');
+    res.send('{"onboarding":' + JSON.stringify(body,null,2) + '}\n');
   }).catch(function(err) {
     res.send('{"error" : ' + JSON.stringify(err,null,2) + '}\n');
   });
 });
 
 // read
-router.get('/:companyId', function(req, res) {
+router.get('/:onboardingId', function(req, res) {
   processItem(req,res).then(function(body){
-    res.send('{"customer":' + JSON.stringify(body,null,2) + '}\n');
+    res.send('{"onboarding":' + JSON.stringify(body,null,2) + '}\n');
   }).catch(function(err) {
     res.send('{"error" : ' + JSON.stringify(err,null,2) + '}\n');
   });
 });
 
 // update
-router.put('/:companyId', function(req, res) {
+router.put('/:onboardingId', function(req, res) {
   processUpdate(req,res).then(function(body){
-    res.send('{"customer":' + JSON.stringify(body,null,2) + '}\n');
+    res.send('{"onboarding":' + JSON.stringify(body,null,2) + '}\n');
   }).catch(function(err) {
     res.send('{"error" : ' + JSON.stringify(err,null,2) + '}\n');
   });
 });
 
 // delete
-router.delete('/:companyId', function(req, res) {
+router.delete('/:onboardingId', function(req, res) {
   processDelete(req,res).then(function(body){
-    res.send('{"customer":' + JSON.stringify(body,null,2) + '}\n');
+    res.send('{"onboarding":' + JSON.stringify(body,null,2) + '}\n');
   }).catch(function(err) {
     res.send('{"error" : ' + JSON.stringify(err,null,2) + '}\n');
   });
@@ -119,7 +119,7 @@ function processPost(req,res) {
   return new Promise(function(resolve,reject) {
     if(req.body) {
      var body = req.body;
-     resolve(component({name:'customer',action:'add',item:body,props:props,reqd:reqd}));
+     resolve(component({name:'onboarding',action:'add',item:body,props:props,reqd:reqd}));
     }
     else {
       reject({error:"invalid body"});
@@ -129,14 +129,14 @@ function processPost(req,res) {
 
 function processList(req,res) {
   return new Promise(function(resolve,reject) {
-    resolve(component({name:'customer',action:'list'}));
+    resolve(component({name:'onboarding',action:'list'}));
   });
 }
 
 function processFilter(req,res) {
   return new Promise(function(resolve,reject){
     if(req.query && req.query.length!==0) {
-      resolve(component({name:'customer',action:'filter',filter:req.query}));
+      resolve(component({name:'onboarding',action:'filter',filter:req.query}));
     }
     else {
       reject({error:"invalid query string"});
@@ -146,9 +146,9 @@ function processFilter(req,res) {
 
 function processItem(req,res) {
   return new Promise(function(resolve,reject){
-    if(req.params.companyId && req.params.companyId!==null) {
-      var id = req.params.companyId;
-      resolve(component({name:'customer',action:'item',id:id}));
+    if(req.params.onboardingId && req.params.onboardingId!==null) {
+      var id = req.params.onboardingId;
+      resolve(component({name:'onboarding',action:'item',id:id}));
     } 
     else {
       reject({error:"missing id"});
@@ -159,11 +159,11 @@ function processItem(req,res) {
 function processUpdate(req,res) {
   var id,body;
   return new Promise(function(resolve,reject){
-    id = req.params.companyId||null;
+    id = req.params.onboardingId||null;
     body = req.body||null;
     if(id!==null && body!==null) {
        resolve(component(
-         {name:'customer',
+         {name:'onboarding',
           action:'update',
           id:id,
           item:body,
@@ -178,9 +178,9 @@ function processUpdate(req,res) {
 
 function processDelete(req,res) {
   return new Promise(function(resolve,reject){
-    if(req.params.companyId && req.params.companyId!==null) {
-      var id = req.params.companyId;
-      resolve(component({name:'customer',action:'delete', id:id}));
+    if(req.params.onboardingId && req.params.onboardingId!==null) {
+      var id = req.params.onboardingId;
+      resolve(component({name:'onboarding',action:'delete', id:id}));
     }
     else {
       reject({error:"invalid id"});
