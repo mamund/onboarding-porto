@@ -25,5 +25,10 @@
   "bugs": {
     "url": "https://github.com/mamund/onboarding-porto/issues"
   },
-  "homepage": "https://github.com/onboarding-porto#readme"
- }
+  "homepage": "https://github.com/onboarding-porto#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4"
+  }
+}
