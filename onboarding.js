@@ -25,6 +25,9 @@ router.use(function timeLog (req, res, next) {
 //var props = ['id','name','email','status','dateUpdated','dateCreated'];
 var props = [
   'id',
+  'dateCreated',
+  'dateUpdated',
+  'companyId',
   'companyName',
   'streetAddress',
   'city',
@@ -33,11 +36,20 @@ var props = [
   'country',
   'telephone',
   'email',
-  'status',
-  'dateCreated',
+  'companyStatus',
+  'accountId',
+  'division',
+  'spendingLimit',
+  'discountPercentage',
+  'accountStatus',
+  'activityId',
+  'activityType',
+  'dateScheduled',
+  'notes',
+  'activityStatus',
   'dateUpdated'
 ]
-var reqd = ['companyName','email','status'];
+var reqd = ['status'];
 
 /*
 status MUST be one of:
@@ -52,7 +64,7 @@ status MUST be one of:
  ***************************************/
 // home
 router.get('/', function (req, res) {
-  res.send('{"home" : "{"name":"customer", "rel" : "collection", href":"/company/list/"}}\n');
+  res.send('{"home" : {"name":"onboarding", "rel" : "collection", "href":"/onboarding/list/"}}\n');
 })
 
 // create
