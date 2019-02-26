@@ -1,0 +1,21 @@
+{
+  "name": "onboarding-porto",
+  "version": "1.0.0",
+  "description": "onboarding project for porto workshop",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index"
+  },
+  "keywords": [
+    "porto",
+    "workshop",
+    "api",
+    "amundsen"
+  ],
+  "author": "mca@amundsen.com",
+  "license": "ISC"
+}
