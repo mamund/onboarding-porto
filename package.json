@@ -10,6 +10,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mamund/onboarding-porto.git"
+  },
   "keywords": [
     "porto",
     "workshop",
@@ -17,5 +21,9 @@
     "amundsen"
   ],
   "author": "mca@amundsen.com",
-  "license": "ISC"
-}
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mamund/onboarding-porto/issues"
+  },
+  "homepage": "https://github.com/onboarding-porto#readme"
+ }
