@@ -21,7 +21,8 @@ router.use(function timeLog (req, res, next) {
   next()
 })
 
-// config onboarding state object
+// config customer object
+//var props = ['id','name','email','status','dateUpdated','dateCreated'];
 var props = [
   'id',
   'dateCreated',
@@ -48,8 +49,6 @@ var props = [
   'activityStatus',
   'dateUpdated'
 ]
-
-// list required properties
 var reqd = ['status'];
 
 /*
@@ -195,6 +194,7 @@ function companyLinks(list) {
         {name:"companyName",value:""},
         {name:"email",value:""},
         {name:"status",value:"pending"},
+
       ]
     }
   };
