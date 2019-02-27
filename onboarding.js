@@ -132,10 +132,38 @@ router.get('/company', function(req, res) {
 
 // show account form
 router.get('/account', function(req, res) {
+  processList(req,res).then(function(body){
+    body = itemLinks(body);
+    body = {onboarding:body};
+    body = accountLinks(body);
+    res.send(JSON.stringify(body,null,2));
+  }).catch(function(err) {
+    res.send('{"error" : ' + JSON.stringify(err,null,2) + '}\n');
+  });
 });
 
 // show activity form
 router.get('/activity', function(req, res) {
+  processList(req,res).then(function(body){
+    body = itemLinks(body);
+    body = {onboarding:body};
+    body = activityLinks(body);
+    res.send(JSON.stringify(body,null,2));
+  }).catch(function(err) {
+    res.send('{"error" : ' + JSON.stringify(err,null,2) + '}\n');
+  });
+});
+
+// show activity form
+router.get('/commit', function(req, res) {
+  processList(req,res).then(function(body){
+    body = itemLinks(body);
+    body = {onboarding:body};
+    body = commitLinks(body);
+    res.send(JSON.stringify(body,null,2));
+  }).catch(function(err) {
+    res.send('{"error" : ' + JSON.stringify(err,null,2) + '}\n');
+  });
 });
 
 module.exports = router
@@ -195,6 +223,71 @@ function companyLinks(list) {
         {name:"companyName",value:""},
         {name:"email",value:""},
         {name:"status",value:"pending"},
+      ]
+    }
+  };
+return list;
+}
+
+function accountLinks(list) {
+  var id="";
+  list.links = [];
+  if(list.length>0) {
+    id=list[0].id;
+  }
+  list.links[0] = {rel:"home",href:"/onboarding/"};
+  list.links[1] = {rel:"update",href:"/onboarding/wip",
+    form: {
+      method:"put",
+      contentType:"application/x-www-form-urlencoded",
+      properties: [
+        {name:"onboardingId",value:id},
+        {name:"division",value:""},
+        {name:"spendingLimit",value:""},
+        {name:"discountPercentage",value:""},
+        {name:"accountStatus",value:"pending"},
+      ]
+    }
+  };
+return list;
+}
+
+function activityLinks(list) {
+  var id="";
+  list.links = [];
+  if(list.length>0) {
+    id=list[0].id;
+  }
+  list.links[0] = {rel:"home",href:"/onboarding/"};
+  list.links[1] = {rel:"update",href:"/onboarding/wip",
+    form: {
+      method:"put",
+      contentType:"application/x-www-form-urlencoded",
+      properties: [
+        {name:"onboardingId",value:id},
+        {name:"activityType",value:"email"},
+        {name:"dateScheduled",value:""},
+        {name:"notes",value:""},
+        {name:"activityStatus",value:"pending"},
+      ]
+    }
+  };
+return list;
+}
+
+function commitLinks(list) {
+  var id="";
+  list.links = [];
+  if(list.length>0) {
+    id=list[0].id;
+  }
+  list.links[0] = {rel:"home",href:"/onboarding/"};
+  list.links[1] = {rel:"commit",href:"/onboarding/wip",
+    form: {
+      method:"post",
+      contentType:"application/x-www-form-urlencoded",
+      properties: [
+        {name:"onboardingId",value:id}
       ]
     }
   };
