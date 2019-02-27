@@ -70,7 +70,10 @@ router.get('/', function (req, res) {
 // create
 router.post('/', function(req,res) {
   processPost(req,res).then(function(body) {
-    res.send('{"onboarding" : ' + JSON.stringify(body,null,2) + '}\n');
+    body = itemLinks(body);
+    body = {onboarding:body};
+    body = collectionLinks(body);
+    res.send(JSON.stringify(body,null,2));
   }).catch(function(err) {
     res.send('{"error" : ' + JSON.stringify(err,null,2) + '}\n');
   });
@@ -79,7 +82,10 @@ router.post('/', function(req,res) {
 // list
 router.get('/list/', function(req, res) {
   processList(req,res).then(function(body) {
-    res.send('{"onboarding":' + JSON.stringify(body,null,2) + '}\n');
+    body = itemLinks(body);
+    body = {onboarding:body};
+    body = collectionLinks(body);
+    res.send(JSON.stringify(body,null,2));
   }).catch(function(err) {
     res.send('{"error" : ' + JSON.stringify(err,null,2) + '}\n');
   });
@@ -88,7 +94,10 @@ router.get('/list/', function(req, res) {
 // filter
 router.get('/filter/', function(req, res) {
   processFilter(req,res).then(function(body){
-    res.send('{"onboarding":' + JSON.stringify(body,null,2) + '}\n');
+    body = itemLinks(body);
+    body = {onboarding:body};
+    body = collectionLinks(body);
+    res.send(JSON.stringify(body,null,2));
   }).catch(function(err) {
     res.send('{"error" : ' + JSON.stringify(err,null,2) + '}\n');
   });
@@ -97,7 +106,10 @@ router.get('/filter/', function(req, res) {
 // read
 router.get('/:onboardingId', function(req, res) {
   processItem(req,res).then(function(body){
-    res.send('{"onboarding":' + JSON.stringify(body,null,2) + '}\n');
+    body = itemLinks(body);
+    body = {onboarding:body};
+    body = collectionLinks(body);
+    res.send(JSON.stringify(body,null,2));
   }).catch(function(err) {
     res.send('{"error" : ' + JSON.stringify(err,null,2) + '}\n');
   });
@@ -106,7 +118,10 @@ router.get('/:onboardingId', function(req, res) {
 // update
 router.put('/:onboardingId', function(req, res) {
   processUpdate(req,res).then(function(body){
-    res.send('{"onboarding":' + JSON.stringify(body,null,2) + '}\n');
+    body = itemLinks(body);
+    body = {onboarding:body};
+    body = collectionLinks(body);
+    res.send(JSON.stringify(body,null,2));
   }).catch(function(err) {
     res.send('{"error" : ' + JSON.stringify(err,null,2) + '}\n');
   });
@@ -115,13 +130,65 @@ router.put('/:onboardingId', function(req, res) {
 // delete
 router.delete('/:onboardingId', function(req, res) {
   processDelete(req,res).then(function(body){
-    res.send('{"onboarding":' + JSON.stringify(body,null,2) + '}\n');
+    body = itemLinks(body);
+    body = {onboarding:body};
+    body = collectionLinks(body);
+    res.send(JSON.stringify(body,null,2));
   }).catch(function(err) {
     res.send('{"error" : ' + JSON.stringify(err,null,2) + '}\n');
   });
 });
 
 module.exports = router
+
+// handle links for each item
+function itemLinks(list) {
+  list.forEach(item => {
+    item.links = [];
+    item.links[0] = {rel:"read",href:"/onboarding/" + item.id};
+    item.links[1] = {
+      rel:"update",href:"/onboarding/" + item.id,
+      form: {
+        method:"put",
+        contentType:"application/x-www-form-urlencoded",
+        properties:[
+        ]
+      }
+    };
+    item.links[2] = {rel:"delete",href:"/onboarding/" + item.id,
+      form: {
+        method:"delete",
+        properties:[]
+      }
+    };
+  });
+  return list;
+}
+
+// handle collection links
+function collectionLinks(list) {
+    list.links = [];
+    list.links[0] = {rel:"list",href:"/onboarding/list"};
+    list.links[1] = {rel:"filter",href:"/onboarding/filter",
+      form: {
+        method:"get",
+        contentType:"application/x-www-form-urlencoded",
+        properties:[
+        ]
+      }
+    };
+    list.links[2] = {rel:"add",href:"/onboarding/list",
+      form: {
+        method:"post",
+        contentType:"application/x-www-form-urlencoded",
+        properties: [
+        ]
+      }
+    };
+    list.links[3] = {rel:"home",href:"/onboarding/"};
+    console.log(list);
+  return list;
+}
 
 /****************************************
  * handle processing of request/responses
