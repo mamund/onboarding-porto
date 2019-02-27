@@ -62,25 +62,14 @@ status MUST be one of:
 /***************************************
  * handle request events
  ***************************************/
+
 // home
 router.get('/', function (req, res) {
-  res.send('{"home" : {"name":"onboarding", "rel" : "collection", "href":"/onboarding/list/"}}\n');
+  res.send('{"home" : {"name":"onboarding", "rel" : "collection", "href":"/onboarding/wip/"}}\n');
 })
 
-// create
-router.post('/', function(req,res) {
-  processPost(req,res).then(function(body) {
-    body = itemLinks(body);
-    body = {onboarding:body};
-    body = collectionLinks(body);
-    res.send(JSON.stringify(body,null,2));
-  }).catch(function(err) {
-    res.send('{"error" : ' + JSON.stringify(err,null,2) + '}\n');
-  });
-});
-
-// list
-router.get('/list/', function(req, res) {
+// show wip form
+router.get('/wip', function(req, res) {
   processList(req,res).then(function(body) {
     body = itemLinks(body);
     body = {onboarding:body};
@@ -91,9 +80,9 @@ router.get('/list/', function(req, res) {
   });
 });
 
-// filter
-router.get('/filter/', function(req, res) {
-  processFilter(req,res).then(function(body){
+// create wip
+router.post('/wip', function(req,res) {
+  processPost(req,res).then(function(body) {
     body = itemLinks(body);
     body = {onboarding:body};
     body = collectionLinks(body);
@@ -103,20 +92,9 @@ router.get('/filter/', function(req, res) {
   });
 });
 
-// read
-router.get('/:onboardingId', function(req, res) {
-  processItem(req,res).then(function(body){
-    body = itemLinks(body);
-    body = {onboarding:body};
-    body = collectionLinks(body);
-    res.send(JSON.stringify(body,null,2));
-  }).catch(function(err) {
-    res.send('{"error" : ' + JSON.stringify(err,null,2) + '}\n');
-  });
-});
 
-// update
-router.put('/:onboardingId', function(req, res) {
+// update wip
+router.put('/wip', function(req, res) {
   processUpdate(req,res).then(function(body){
     body = itemLinks(body);
     body = {onboarding:body};
@@ -127,8 +105,8 @@ router.put('/:onboardingId', function(req, res) {
   });
 });
 
-// delete
-router.delete('/:onboardingId', function(req, res) {
+// cancel wip
+router.delete('/wip', function(req, res) {
   processDelete(req,res).then(function(body){
     body = itemLinks(body);
     body = {onboarding:body};
@@ -139,6 +117,26 @@ router.delete('/:onboardingId', function(req, res) {
   });
 });
 
+// show company form
+router.get('/company', function(req, res) {
+  processList(req,res).then(function(body) {
+    body = itemLinks(body);
+    body = {onboarding:body};
+    body = companyLinks(body);
+    res.send(JSON.stringify(body,null,2));
+  }).catch(function(err) {
+    res.send('{"error" : ' + JSON.stringify(err,null,2) + '}\n');
+  });
+});
+
+// show account form
+router.get('/account', function(req, res) {
+});
+
+// show activity form
+router.get('/activity', function(req, res) {
+});
+
 module.exports = router
 
 // handle links for each item
@@ -147,7 +145,7 @@ function itemLinks(list) {
     item.links = [];
     item.links[0] = {rel:"read",href:"/onboarding/" + item.id};
     item.links[1] = {
-      rel:"update",href:"/onboarding/" + item.id,
+      rel:"update",href:"/wip/" + item.id,
       form: {
         method:"put",
         contentType:"application/x-www-form-urlencoded",
@@ -155,7 +153,7 @@ function itemLinks(list) {
         ]
       }
     };
-    item.links[2] = {rel:"delete",href:"/onboarding/" + item.id,
+    item.links[2] = {rel:"cancel",href:"/wip/" + item.id,
       form: {
         method:"delete",
         properties:[]
@@ -168,16 +166,8 @@ function itemLinks(list) {
 // handle collection links
 function collectionLinks(list) {
     list.links = [];
-    list.links[0] = {rel:"list",href:"/onboarding/list"};
-    list.links[1] = {rel:"filter",href:"/onboarding/filter",
-      form: {
-        method:"get",
-        contentType:"application/x-www-form-urlencoded",
-        properties:[
-        ]
-      }
-    };
-    list.links[2] = {rel:"add",href:"/onboarding/list",
+    list.links[0] = {rel:"home",href:"/onboarding/"};
+    list.links[1] = {rel:"add",href:"/onboarding/wip",
       form: {
         method:"post",
         contentType:"application/x-www-form-urlencoded",
@@ -185,9 +175,30 @@ function collectionLinks(list) {
         ]
       }
     };
-    list.links[3] = {rel:"home",href:"/onboarding/"};
-    console.log(list);
   return list;
+}
+
+function companyLinks(list) {
+  var id="";
+  list.links = [];
+  if(list.length>0) {
+    id=list[0].id;
+  }
+  list.links[0] = {rel:"home",href:"/onboarding/"};
+  list.links[1] = {rel:"update",href:"/onboarding/wip",
+    form: {
+      method:"put",
+      contentType:"application/x-www-form-urlencoded",
+      properties: [
+        {name:"onboardingId",value:id},
+        {name:"companyName",value:""},
+        {name:"email",value:""},
+        {name:"status",value:"pending"},
+
+      ]
+    }
+  };
+return list;
 }
 
 /****************************************
