@@ -23,7 +23,7 @@ var jwtCheck = jwt({
     algorithms: ['RS256']
 });
 
-app.use(jwtCheck);
+// app.use(jwtCheck);
 
 app.use('/onboarding',onboarding);
 app.listen(port, () => console.log(`onboarding svc listening on port ${port}!`));
